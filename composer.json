@@ -1,0 +1,26 @@
+{
+    "name": "biohivetech/laravel-introspection",
+    "description": "Laravel Introspection Client - Provides middleware and authentication guard for using an introspection endpoint for API authentication.",
+    "license": "MIT",
+    "authors": [{
+        "name": "Dustin Schreiber (BioHive Tech)",
+        "email": "support@biohivetech.com"
+    }],
+    "require": {
+        "php": "^7.2",
+        "guzzlehttp/guzzle": "^6.0",
+        "laravel/passport": "^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "BioHiveTech\\Introspection\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "BioHiveTech\\Introspection\\IntrospectionServiceProvider"
+            ]
+        }
+    }
+}
