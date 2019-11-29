@@ -69,7 +69,6 @@ class IntrospectionController
 	{
         try {
             if (! $this->validateIntrospectingClient($request)) {
-                dd('validate 1');
                 return $this->inactiveResponse();
             }
 
@@ -77,7 +76,6 @@ class IntrospectionController
             // Validation - Let's make sure we were actually given a token to introspect
             // TODO: Move to a Form Request? Probably if I make this it's own package
             if (! $request->token) {
-                dd('no token');
                 return $this->inactiveResponse();
             }
 
@@ -101,7 +99,6 @@ class IntrospectionController
             )
             {
                 // If any of the above are false, we should return an inactive resposne
-                dd('something else');
                 return $this->inactiveResponse();
             }
 
@@ -123,8 +120,12 @@ class IntrospectionController
             if ($token->getClaim('sub')) {
                 $userModel = config('auth.providers.users.model');
                 $user = (new $userModel)->findOrFail($token->getClaim('sub'));
+                if (method_exists($user, 'getIntrospectionUserId')) {
+                    $response['id'] = $user->getIntrospectionUserId();
+                } else {
+                    $response['id'] = $user->uuid;
+                }
                 $response += [
-                    'id' => $user->uuid,
                     'username' => $user->username,
                     'displayName' => $user->name,
                     'givenName' => $user->givenName,
@@ -134,8 +135,6 @@ class IntrospectionController
 
             return response()->json($response, 200);
         } catch (\Exception $exception) {
-            dump('exception');
-            dd($exception->getMessage());
             return $this->inactiveResponse();
         }
     }

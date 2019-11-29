@@ -33,16 +33,13 @@ class IntrospectionGuard
     /**
      * Create a new token guard instance.
      *
-     * @param  \Illuminate\Contracts\Auth\UserProvider  $provider
      * @param  \Illuminate\Contracts\Encryption\Encrypter  $encrypter
      * @return void
      */
     public function __construct(
-        UserProvider $provider,
         Encrypter $encrypter
     )
     {
-        $this->provider = $provider;
         $this->encrypter = $encrypter;
     }
 
@@ -59,9 +56,21 @@ class IntrospectionGuard
                 return; // Returns unauthenticated error
             }
             
+            // Get the model used for the current API provider, typically App\User
+            $provider = config('auth.guards.api.provider');
+
+            if (is_null($model = config('auth.providers.'.$provider.'.model'))) {
+                throw new RuntimeException('Unable to determine authentication model from configuration.');
+            }
+
             // If we have a user_id we are probably using authorization code, bind token to user
             if ($request->attributes->get('oauth_user_id')) {
-                $user = \App\User::whereUuid($request->attributes->get('oauth_user_id'))->first();
+
+                if (method_exists($model, 'findForIntrospect')) {
+                    $user = (new $model)->findForIntrospect($request->attributes->get('oauth_user_id'))->first();
+                } else {
+                    $user = (new $model)->whereUuid($request->attributes->get('oauth_user_id'))->first();
+                }
 
                 if (! $user) {
                     return;
@@ -90,7 +99,12 @@ class IntrospectionGuard
                 return;
             }
 
-            if ($user = \App\User::whereUuid($token['sub'])->first()) {
+            if (method_exists($model, 'findForIntrospect')) {
+                $user = (new $model)->findForIntrospect($token['sub'])->first();
+            } else {
+                $user = (new $model)->whereUuid($token['sub'])->first();
+            }
+            if ($user) {
                 return $user->withAccessToken(new \Laravel\Passport\TransientToken);
             }
         }

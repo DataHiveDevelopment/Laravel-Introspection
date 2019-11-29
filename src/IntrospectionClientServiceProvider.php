@@ -53,7 +53,6 @@ class IntrospectionServiceProvider extends ServiceProvider
     {
         return new RequestGuard(function ($request) use ($config) {
             return (new IntrospectionGuard(
-                Auth::createUserProvider($config['provider']),
                 $this->app->make('encrypter')
             ))->user($request);
         }, $this->app['request']);
