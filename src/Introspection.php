@@ -92,7 +92,7 @@ class Introspection {
      * @param  array  $options
      * @return void
      */
-    public static function routes($callback = null, array $options = [])
+    public static function routes(array $options = [])
     {
         $defaultOptions = [
             'middleware' => 'client',
