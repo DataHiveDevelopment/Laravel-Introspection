@@ -1,6 +1,4 @@
----
-title: "BioHive Tech - Laravel Passport Introspection"
----
+# BioHive Tech - Laravel Passport Introspection
 
 - <a href="#AboutThisPackage">About This Package</a>
 - <a href="#QuickSetup">Quick Setup</a>
