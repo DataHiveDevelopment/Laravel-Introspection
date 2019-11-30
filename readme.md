@@ -1,7 +1,7 @@
 # BioHive Tech - Laravel Passport Introspection
 
 - <a href="#AboutThisPackage">About This Package</a>
-- <a href="#QuickSetup">Quick Setup</a>
+- <a href="#Installing">Installing</a>
 - <a href="#AuthorizationServer">Authorization Server</a>
 - <a href="#ResourceServers">Resource Server(s)</a>
 - <a href="#ProtectingRoutes">Protecting Routes</a>
@@ -22,7 +22,7 @@ This package provides an Introspection controller,  authentication guard and mid
 
 One package, two functions.
 
-## <a name="QuickSetup">#</a> Quick Setup
+## <a name="Installing">#</a> Installing
 
 ```bash
 composer require biohivetech/laravel-introspection
@@ -96,7 +96,7 @@ introspection_client_id=
 introspection_client_secret=
 ```
 
-The introspection endpoint currently only supports authentication via `Bearer` token via Client Credentials. Generate client credentials using `php artisan passport:client --client` on your Passport server and enter the details into your `.env` file under the `introspection_client_id` and `introspection_client_secret`.
+The introspection endpoint currently only supports authentication via `Bearer` token by means of the Client Credentials grant. Generate a client credentials OAuth client using `php artisan passport:client --client` on your Passport server and enter the details into your `.env` file under the `introspection_client_id` and `introspection_client_secret`.
 
 The `introspection_token_scopes` option should be a quoted, space separated list of scopes you want your introspection client to use. If not defined, a wildcard scope, `*`, will be used.
 
@@ -175,7 +175,10 @@ composer require dyrynda/laravel-model-uuid
 composer require dyrynda/laravel-efficient-uuid
 ```
 
-Follow the package's documentation to implement the columns and traits on the necessary models. I currently only support the default `uuid` column name so don't change anything in your database migrations when it comes to that.
+Follow the package's documentation to implement the columns and traits on the necessary models. This package currently only support the default `uuid` column name so don't change anything in your database migrations when it comes to that.
+
+- [Michael Dyrynda's Laravel Efficient UUID](<https://github.com/michaeldyrynda/laravel-efficient-uuid>)
+- [Michael Dyrynda's Laravel Model UUID](<https://github.com/michaeldyrynda/laravel-model-uuid>)
 
 ## <a name="ANoteOnUUIDs">#</a> A Note on UUIDs
 
@@ -185,7 +188,7 @@ This package was designed for BioHive's specific needs. Therefore, it assumes th
 
 We utilize our own Socialite provider to authenticate users on our resource applications with our master user authentication application. This service also is the system that has Passport, issues OAuth tokens and manages OAuth clients.
 
-We have the following `user` table schema in place on our Resource servers):
+We have the following `user` table schema in place on our Resource servers:
 
 ```php
 $table->bigIncrements('id');
@@ -208,7 +211,7 @@ $table->timestamps();
 
 We utilize [Michael Dyrynda's Laravel Efficient UUID](<https://github.com/michaeldyrynda/laravel-efficient-uuid>) package to provide our `efficientUuid` method on our database tables as well as his [Laravel Model UUID](<https://github.com/michaeldyrynda/laravel-model-uuid>) package to provide the type casting and model methods to lookup entries via UUID.
 
-Since I use Socialite to authenticate users, I weren't able to use the built-in [Eloquent UserProvider's](<https://laravel.com/api/6.x/Illuminate/Auth/EloquentUserProvider.html>) methods to retrieve the user. Instead, I are instantiating the User model (as provided by `auth.providers.[guards.api.provider].model'`, which defaults to `App\User::class`), so that I can utilize the `User::whereUuid(...)` method.
+Since we use Socialite to authenticate users, I wasn't able to use the built-in [Eloquent UserProvider's](<https://laravel.com/api/6.x/Illuminate/Auth/EloquentUserProvider.html>) methods to retrieve the user. Instead, I am instantiating the User model (as provided by `auth.providers.[guards.api.provider].model'`, which defaults to `App\User::class`), so that I can utilize the `User::whereUuid(...)` method.
 
 The UUID is returned by the introspection controller so that the introspection guard knows what UUID to try and match the user against.
 
@@ -245,9 +248,9 @@ public function findForIntrospect($userId)
 }
 ```
 
-This method should return the model for the user that matches the ID based on whatever criteria you want to use. In this example, I are matching based on the username.
+This method should return the model for the user that matches the ID based on whatever criteria you want to use. In this example, we are matching based on the username.
 
-**NOTE:** I do not recommend utilizing a non-static, user-changeable field, the above is purely for an example.
+**NOTE:** I do not recommend utilizing a non-static, user-changeable field as this would make it impossible to match users across systems. The above is purely for an example.
 
 For the Authorization server, you will want to implement the `getIntrospectionUserId()` method that returns the unique user ID you are using to tie users on your resource servers to the identity on the authorization server. This ID will be returned in the introspection response as the `id` claim as shown above.
 
@@ -260,13 +263,13 @@ public function getIntrospectionUserId()
 
 If you override our default UUID lookup by utilizing the `getIntrospectionUserId()` method, you will need to  implement the corresponding `findForIntrospect()` method on the resource server's user model.
 
-If you don't define the above methods, I default to using the `whereUuid()` method so be sure you pick and implement the method you wish to utilize.
+If you don't define the above methods, the package defaults to using the `whereUuid()` method so be sure you pick and implement the method you wish to utilize.
 
 ## <a name="JavaScript">#</a> Consuming Your Resource Server's API With JavaScript
 
-Like Passport, I have a `CreateFreshApiToken` middleware that you can implement to make API calls from your front-end JavaScript. I recommend taking a read through the [official documentation](<https://laravel.com/docs/6.x/passport#consuming-your-api-with-javascript>) to better understand this usage.
+Like Passport, I have a created a `CreateFreshApiToken` middleware that you can implement to make API calls from your front-end JavaScript. I recommend taking a read through the [official documentation](<https://laravel.com/docs/6.x/passport#consuming-your-api-with-javascript>) to better understand this usage.
 
-This token does not work across resource servers currently and can only be used to call APIs published on the same resource server as the JavaScript call.
+This token does not work across resource servers currently and can only be used to call APIs published on the same resource server as the JavaScript call was made from.
 
 All you need to do is to add the `CreateFreshApiToken` middleware to your `web` middleware group in your `app/Http/Kernel.php` file:
 
