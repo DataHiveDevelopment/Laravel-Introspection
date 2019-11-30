@@ -188,7 +188,7 @@ This package was designed for BioHive's specific needs. Therefore, it assumes th
 
 We utilize our own Socialite provider to authenticate users on our resource applications with our master user authentication application. This service also is the system that has Passport, issues OAuth tokens and manages OAuth clients.
 
-We have the following `user` table schema in place on our Resource servers:
+We have the following `user` table schema in place on our consuming applications (Resource Servers):
 
 ```php
 $table->bigIncrements('id');
@@ -197,7 +197,7 @@ $table->rememberToken();
 $table->timestamps();
 ```
 
-And on our central user authentication (Authorization server):
+And on our central user authentication server (OAuth Authorization Server):
 
 ```php
 $table->bigIncrements('id');
@@ -230,10 +230,6 @@ Example response from the `/oauth/introspect` endpoint:
     "aud": 4,
     "jti": "702481dc66b64bd1eee41be4e20e2d3170ac509b6d47b3cab50d8fbef83f73d1b637080b5a0cdd47",
     "id": "11e17430-9710-4033-be5d-12e0d182f8f3",
-    "username": "ReArmedHalo",
-    "displayName": "(BioHive) Dustin Schreiber",
-    "givenName": "Dustin",
-    "familyName": "Schreiber"
 }
 ```
 
@@ -261,7 +257,7 @@ public function getIntrospectionUserId()
 }
 ```
 
-If you override our default UUID lookup by utilizing the `getIntrospectionUserId()` method, you will need to  implement the corresponding `findForIntrospect()` method on the resource server's user model.
+If you override our default UUID lookup by utilizing the `getIntrospectionUserId()` method, you will need to implement the corresponding `findForIntrospect()` method on the resource server's user model.
 
 If you don't define the above methods, the package defaults to using the `whereUuid()` method so be sure you pick and implement the method you wish to utilize.
 

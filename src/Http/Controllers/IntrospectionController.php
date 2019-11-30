@@ -125,12 +125,6 @@ class IntrospectionController
                 } else {
                     $response['id'] = $user->uuid;
                 }
-                $response += [
-                    'username' => $user->username,
-                    'displayName' => $user->name,
-                    'givenName' => $user->givenName,
-                    'familyName' => $user->familyName,
-                ];
             }
 
             return response()->json($response, 200);
