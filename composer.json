@@ -2,7 +2,6 @@
     "name": "biohivetech/laravel-introspection",
     "description": "Laravel Introspection - Provides introspection controller and authentication guard for OAuth Introspection.",
     "license": "MIT",
-    "version": "1.0.0",
     "minimum-stability": "dev",
     "prefer-stable": true,
     "authors": [{
