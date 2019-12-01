@@ -177,6 +177,10 @@ composer require dyrynda/laravel-efficient-uuid
 
 Follow the package's documentation to implement the columns and traits on the necessary models. This package currently only support the default `uuid` column name so don't change anything in your database migrations when it comes to that.
 
+```php
+$table->efficientUuid('uuid')->index();
+```
+
 - [Michael Dyrynda's Laravel Efficient UUID](<https://github.com/michaeldyrynda/laravel-efficient-uuid>)
 - [Michael Dyrynda's Laravel Model UUID](<https://github.com/michaeldyrynda/laravel-model-uuid>)
 
@@ -213,7 +217,7 @@ We utilize [Michael Dyrynda's Laravel Efficient UUID](<https://github.com/michae
 
 Since we use Socialite to authenticate users, I wasn't able to use the built-in [Eloquent UserProvider's](<https://laravel.com/api/6.x/Illuminate/Auth/EloquentUserProvider.html>) methods to retrieve the user. Instead, I am instantiating the User model (as provided by `auth.providers.[guards.api.provider].model'`, which defaults to `App\User::class`), so that I can utilize the `User::whereUuid(...)` method.
 
-The UUID is returned by the introspection controller so that the introspection guard knows what UUID to try and match the user against.
+The UUID is returned in the introspection controller's response so that the introspection guard knows what UUID to try and match the user against.
 
 Example response from the `/oauth/introspect` endpoint:
 
