@@ -64,6 +64,16 @@ public function boot()
 }
 ```
 
+You can change the introspection endpoint prefix from the default `/oauth` by passing the option to `Introspection::routes` call:
+
+```php
+Introspection::routes([
+    'prefix' => '/apiauth'
+]);
+```
+
+In the above example, the introspection endpoint would become `https://myauthserver.test/apiauth/introspect`.
+
 ## <a name="ResourceServers">#</a> Resource Server(s)
 
 From <https://oauth2.thephpleague.com/terminology/>
@@ -112,16 +122,6 @@ Introspection::routes([
 ```
 
 I recommend leaving the `client` middleware in place unless you implement some other authentication method. See the [OAuth Introspection RFC](<https://tools.ietf.org/html/rfc7662#section-4>) for details on protecting the introspection endpoint.
-
-You can change the introspection endpoint prefix from the default `/oauth` by passing the option to `Introspection::routes` call:
-
-```php
-Introspection::routes([
-    'prefix' => '/api/oauth'
-]);
-```
-
-In the above example, the introspection endpoint would become `https://myauthserver.test/api/oauth/introspect`.
 
 ## <a name="ProtectingRoutes">#</a> Protecting Routes
 
