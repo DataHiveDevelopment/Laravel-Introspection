@@ -1,10 +1,10 @@
 <?php
 
-namespace BioHiveTech\Introspection\Http\Middleware;
+namespace DataHiveDevelopment\Introspection\Http\Middleware;
 
 use Closure;
-use BioHiveTech\Introspection\Token;
-use BioHiveTech\Introspection\Introspection;
+use DataHiveDevelopment\Introspection\Token;
+use DataHiveDevelopment\Introspection\Introspection;
 
 abstract class CheckCredentials
 {
@@ -50,7 +50,7 @@ abstract class CheckCredentials
     /**
      * Validate token credentials.
      *
-     * @param  \BioHiveTech\Introspection\Token  $token
+     * @param  \DataHiveDevelopment\Introspection\Token  $token
      * @return void
      */
     abstract protected function validateCredentials($token);
@@ -58,7 +58,7 @@ abstract class CheckCredentials
     /**
      * Validate token credentials.
      *
-     * @param  \BioHiveTech\Introspection\Token  $token
+     * @param  \DataHiveDevelopment\Introspection\Token  $token
      * @param  array  $scopes
      * @return void
      */

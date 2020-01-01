@@ -1,6 +1,6 @@
 <?php
 
-namespace BioHiveTech\Introspection;
+namespace DataHiveDevelopment\Introspection;
 
 use Firebase\JWT\JWT;
 use GuzzleHttp\client;
@@ -11,7 +11,7 @@ use Laravel\Passport\TransientToken;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Contracts\Encryption\Encrypter;
 use Illuminate\Cookie\Middleware\EncryptCookies;
-use BioHiveTech\Introspection\Introspection;
+use DataHiveDevelopment\Introspection\Introspection;
 
 class IntrospectionGuard
 {

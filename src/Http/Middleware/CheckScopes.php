@@ -1,6 +1,6 @@
 <?php
 
-namespace BioHiveTech\Introspection\Http\Middleware;
+namespace DataHiveDevelopment\Introspection\Http\Middleware;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\AuthenticationException;

@@ -1,4 +1,4 @@
-# BioHive Tech - Laravel Passport Introspection
+# DataHive Development - Laravel Passport Introspection
 
 - <a href="#AboutThisPackage">About This Package</a>
 - <a href="#Installing">Installing</a>
@@ -11,7 +11,7 @@
         - <a href="#ScopeMiddleware">Scope Middleware</a>
 - <a href="#UUIDSetup">UUID Setup</a>
 - <a href="#ANoteOnUUIDs">A Note on UUIDs</a>
-    - <a href="#Background">Quick Background on BioHive's Usage</a>
+    - <a href="#Background">Quick Background on DataHive's Usage</a>
     - <a href="#Overriding">Overriding</a>
 - <a href="#JavaScript">Consuming Your Resource Server's API With JavaScript</a>
     - <a href="#CSRF">CSRF Protection</a>
@@ -25,7 +25,7 @@ One package, two functions.
 ## <a name="Installing">#</a> Installing
 
 ```bash
-composer require biohivetech/laravel-introspection
+composer require datahivedevelopment/laravel-introspection
 ```
 
 Install the package and the following the appropriate steps below depending on which server you are configuring.
@@ -48,7 +48,7 @@ Next, you should call the `Introspection::routes` method within the `boot` metho
 ```php
 <?php
 
-use BioHiveTech\Introspection\Introspection;
+use DataHiveDevelopment\Introspection\Introspection;
 // ...
 public function boot()
 {
@@ -146,8 +146,8 @@ We include scope checking middleware that works pretty much exactly like Passpor
 To get started, add the following middleware to the `$routeMiddleware` property of your `app/Http/Kernel.php` file:
 
 ```php
-'scopes' => \BioHiveTech\Introspection\Http\Middleware\CheckScopes::class,
-'scope' => \BioHiveTech\Introspection\Http\Middleware\CheckForAnyScope::class,
+'scopes' => \DataHiveDevelopment\Introspection\Http\Middleware\CheckScopes::class,
+'scope' => \DataHiveDevelopment\Introspection\Http\Middleware\CheckForAnyScope::class,
 ```
 
 #### <a name="ScopesMiddleware">#</a> `Scopes` Middleware
@@ -186,9 +186,9 @@ $table->efficientUuid('uuid')->index();
 
 ## <a name="ANoteOnUUIDs">#</a> A Note on UUIDs
 
-This package was designed for BioHive's specific needs. Therefore, it assumes that there is a 'share nothing' database implementation. Each application maintains a list of users that all can be linked back to a master authentication application.
+This package was designed for DataHive's specific needs. Therefore, it assumes that there is a 'share nothing' database implementation. Each application maintains a list of users that all can be linked back to a master authentication application.
 
-### <a name="Background">#</a> Quick Background on BioHive's Usage
+### <a name="Background">#</a> Quick Background on DataHive's Usage
 
 We utilize our own Socialite provider to authenticate users on our resource applications with our master user authentication application. This service also is the system that has Passport, issues OAuth tokens and manages OAuth clients.
 
@@ -276,7 +276,7 @@ All you need to do is to add the `CreateFreshApiToken` middleware to your `web` 
 ```php
 'web' => [
     // Other middleware...
-    \BioHiveTech\Introspection\Http\Middleware\CreateFreshApiToken::class,
+    \DataHiveDevelopment\Introspection\Http\Middleware\CreateFreshApiToken::class,
 ],
 ```
 

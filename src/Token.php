@@ -1,6 +1,6 @@
 <?php
 
-namespace BioHiveTech\Introspection;
+namespace DataHiveDevelopment\Introspection;
 
 use Illuminate\Database\Eloquent\Model;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace BioHiveTech\Introspection\Http\Controllers;
+namespace DataHiveDevelopment\Introspection\Http\Controllers;
 
 use Lcobucci\JWT\Token;
 use Lcobucci\JWT\Parser;

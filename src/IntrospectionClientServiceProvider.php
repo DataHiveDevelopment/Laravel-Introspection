@@ -1,6 +1,6 @@
 <?php
 
-namespace BioHiveTech\Introspection;
+namespace DataHiveDevelopment\Introspection;
 
 use Illuminate\Auth\RequestGuard;
 use Illuminate\Auth\Events\Logout;
@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Config\Repository as Config;
-use BioHiveTech\Introspection\Introspection;
-use BioHiveTech\Introspection\IntrospectionGuard;
+use DataHiveDevelopment\Introspection\Introspection;
+use DataHiveDevelopment\Introspection\IntrospectionGuard;
 
 class IntrospectionServiceProvider extends ServiceProvider
 {

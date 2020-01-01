@@ -1,11 +1,11 @@
 {
-    "name": "biohivetech/laravel-introspection",
-    "description": "Laravel Introspection - Provides introspection controller and authentication guard for OAuth Introspection.",
+    "name": "datahivedevelopment/laravel-introspection",
+    "description": "Laravel Introspection - Provides OAuth Introspection capabilities for Laravel Passport",
     "license": "MIT",
     "minimum-stability": "dev",
     "prefer-stable": true,
     "authors": [{
-        "name": "Dustin Schreiber (BioHive Tech)",
+        "name": "Dustin Schreiber (DataHive Development)",
         "email": "support@biohivetech.com"
     }],
     "require": {
@@ -15,13 +15,13 @@
     },
     "autoload": {
         "psr-4": {
-            "BioHiveTech\\Introspection\\": "src/"
+            "DataHiveDevelopment\\Introspection\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "BioHiveTech\\Introspection\\IntrospectionServiceProvider"
+                "DataHiveDevelopment\\Introspection\\IntrospectionServiceProvider"
             ]
         }
     }

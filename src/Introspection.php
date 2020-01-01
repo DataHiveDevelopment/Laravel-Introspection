@@ -1,6 +1,6 @@
 <?php
 
-namespace BioHiveTech\Introspection;
+namespace DataHiveDevelopment\Introspection;
 
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
@@ -97,7 +97,7 @@ class Introspection {
         $defaultOptions = [
             'middleware' => 'client',
             'prefix' => 'oauth',
-            'namespace' => '\BioHiveTech\Introspection\Http\Controllers',
+            'namespace' => '\DataHiveDevelopment\Introspection\Http\Controllers',
         ];
 
         $options = array_merge($defaultOptions, $options);

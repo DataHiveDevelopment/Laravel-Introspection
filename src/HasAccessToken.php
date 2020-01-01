@@ -1,20 +1,20 @@
 <?php
 
-namespace BioHiveTech\Introspection;
+namespace DataHiveDevelopment\Introspection;
 
 trait HasAccessToken {
 
     /**
      * The current access token for the authentication user.
      *
-     * @var \BioHiveTech\Introspection\Token
+     * @var \DataHiveDevelopment\Introspection\Token
      */
     protected $accessToken;
 
     /**
      * Get the current access token being used by the user.
      *
-     * @return \BioHiveTech\Introspection\Token|null
+     * @return \DataHiveDevelopment\Introspection\Token|null
      */
     public function token()
     {
@@ -35,7 +35,7 @@ trait HasAccessToken {
     /**
      * Set the current access token for the user.
      *
-     * @param  \BioHiveTech\Introspection\Token  $accessToken
+     * @param  \DataHiveDevelopment\Introspection\Token  $accessToken
      * @return $this
      */
     public function withAccessToken($accessToken)
