@@ -6,7 +6,7 @@
     "prefer-stable": true,
     "authors": [{
         "name": "Dustin Schreiber (DataHive Development)",
-        "email": "support@biohivetech.com"
+        "email": "support@datahivedev.com"
     }],
     "require": {
         "php": "^7.2",
