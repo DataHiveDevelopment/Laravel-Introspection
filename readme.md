@@ -10,7 +10,7 @@
         - <a href="#ScopesMiddleware">Scopes Middleware</a>
         - <a href="#ScopeMiddleware">Scope Middleware</a>
 - <a href="#UUIDSetup">UUID Setup</a>
-- <a href="#ANoteOnUUIDs">A Note on UUIDs</a>
+- <a href="#WhyUUIDs">A Note on UUIDs</a>
     - <a href="#Background">Quick Background on DataHive's Usage</a>
     - <a href="#Overriding">Overriding</a>
 - <a href="#JavaScript">Consuming Your Resource Server's API With JavaScript</a>
@@ -30,7 +30,7 @@ composer require datahivedevelopment/laravel-introspection
 
 Install the package and the following the appropriate steps below depending on which server you are configuring.
 
-If you want to use UUIDs as a unique identifier for your users across applications, as we do, follow the [UUID Setup](<#UUIDSetup>). You will perform this setup on the authorization server as well as all resource servers.
+If you want to use UUIDs as a unique identifier for your users across applications, as we do, follow the [UUID Setup](<#UUIDSetup>). You will perform this setup on the authorization server only!
 
 ## <a name="AuthorizationServer">#</a> Authorization Server
 
@@ -98,12 +98,12 @@ In your `config/auth.php` configuration file, you should set the `driver` option
 Add the following to your `.env` file:
 
 ```text
-introspection_token_url=http://authserver.test/oauth/token
-introspection_token_scopes=introspect
-introspection_endpoint=http://authserver.test/oauth/introspect
+INTROSPECTION_TOKEN_URL=https://authserver.test/oauth/token
+INTROSPECTION_TOKEN_SCOPES="Introspect"
+INTROSPECTION_ENDPOINT=https://authserver.test/oauth/introspect
 
-introspection_client_id=
-introspection_client_secret=
+INTROSPECTION_CLIENT_ID=
+INTROSPECTION_CLIENT_SECRET=
 ```
 
 The introspection endpoint currently only supports authentication via `Bearer` token by means of the Client Credentials grant. Generate a client credentials OAuth client using `php artisan passport:client --client` on your Passport server and enter the details into your `.env` file under the `introspection_client_id` and `introspection_client_secret`.
@@ -168,14 +168,14 @@ Route::get('/orders', function () {
 
 ## <a name="UUIDSetup">#</a> UUID Setup
 
-Install the following packages:
+Install the following packages on your authorization server:
 
 ```bash
 composer require dyrynda/laravel-model-uuid
 composer require dyrynda/laravel-efficient-uuid
 ```
 
-Follow the package's documentation to implement the columns and traits on the necessary models. This package currently only support the default `uuid` column name so don't change anything in your database migrations when it comes to that.
+Follow the package's documentation to implement the columns and traits on the necessary model. This package currently only support the default `uuid` column name so don't change anything in your database migrations when it comes to that. These packages will make it easy to store a binary form of an UUID in your database.
 
 ```php
 $table->efficientUuid('uuid')->index();
@@ -184,7 +184,7 @@ $table->efficientUuid('uuid')->index();
 - [Michael Dyrynda's Laravel Efficient UUID](<https://github.com/michaeldyrynda/laravel-efficient-uuid>)
 - [Michael Dyrynda's Laravel Model UUID](<https://github.com/michaeldyrynda/laravel-model-uuid>)
 
-## <a name="ANoteOnUUIDs">#</a> A Note on UUIDs
+## <a name="WhyUUIDs">#</a> Why UUIDs?
 
 This package was designed for DataHive's specific needs. Therefore, it assumes that there is a 'share nothing' database implementation. Each application maintains a list of users that all can be linked back to a master authentication application.
 
@@ -192,14 +192,16 @@ This package was designed for DataHive's specific needs. Therefore, it assumes t
 
 We utilize our own Socialite provider to authenticate users on our resource applications with our master user authentication application. This service also is the system that has Passport, issues OAuth tokens and manages OAuth clients.
 
-We have the following `user` table schema in place on our consuming applications (Resource Servers):
+We have the following `user` table schema in place on our resource applications::
 
 ```php
 $table->bigIncrements('id');
-$table->efficientUuid('uuid')->index();
+$table->uuid('uuid')->index();
 $table->rememberToken();
 $table->timestamps();
 ```
+
+> Yes, I'm aware the UUID column is not necessarily efficient at the moment. There is an unrelated issue I haven't solved when we are creating new users in the resource servers with the UUID packages so we aren't using the Michael's packages on resource servers at the moment.
 
 And on our central user authentication server (OAuth Authorization Server):
 
@@ -215,7 +217,7 @@ $table->timestamps();
 
 We utilize [Michael Dyrynda's Laravel Efficient UUID](<https://github.com/michaeldyrynda/laravel-efficient-uuid>) package to provide our `efficientUuid` method on our database tables as well as his [Laravel Model UUID](<https://github.com/michaeldyrynda/laravel-model-uuid>) package to provide the type casting and model methods to lookup entries via UUID.
 
-Since we use Socialite to authenticate users, I wasn't able to use the built-in [Eloquent UserProvider's](<https://laravel.com/api/6.x/Illuminate/Auth/EloquentUserProvider.html>) methods to retrieve the user. Instead, I am instantiating the User model (as provided by `auth.providers.[guards.api.provider].model'`, which defaults to `App\User::class`), so that I can utilize the `User::whereUuid(...)` method.
+Since we use Socialite to authenticate users, I wasn't able to use the built-in [Eloquent UserProvider's](<https://laravel.com/api/6.x/Illuminate/Auth/EloquentUserProvider.html>) methods to retrieve the user, since we want to use a custom column for finding users. Instead, I am instantiating the User model (as provided by `auth.providers.[guards.api.provider].model'`, which defaults to `App\User::class`), so that I can utilize the `User::whereUuid(...)` method.
 
 The UUID is returned in the introspection controller's response so that the introspection guard knows what UUID to try and match the user against.
 
