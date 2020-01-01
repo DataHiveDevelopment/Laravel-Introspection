@@ -106,17 +106,21 @@ INTROSPECTION_CLIENT_ID=
 INTROSPECTION_CLIENT_SECRET=
 ```
 
-The introspection endpoint currently only supports authentication via `Bearer` token by means of the Client Credentials grant. Generate a client credentials OAuth client using `php artisan passport:client --client` on your Passport server and enter the details into your `.env` file under the `introspection_client_id` and `introspection_client_secret`.
+The introspection endpoint currently only supports authentication via `Bearer` token by means of the Client Credentials grant. Generate a client credentials OAuth client using `php artisan passport:client --client` on your Passport server and enter the details into your `.env` file under the `INTROSPECTION_CLIENT_ID` and `INTROSPECTION_CLIENT_SECRET`.
 
-The `introspection_token_scopes` option should be a quoted, space separated list of scopes you want your introspection client to use. If not defined, a wildcard scope, `*`, will be used.
+The `INTROSPECTION_TOKEN_SCOPES` option should be a quoted, space separated list of scopes you want your introspection client to use when talking with the `INTROSPECTION_ENDPOINT`.
 
-You will need to modify the `Introspection::routes` call on your authorization server if you want to use something other than the wildcard. I am using the Passport `scope` middleware in the following example:
+If not defined or left blank, then Passport will assume you asked for no scopes. I recommend that you create and use an `Introspect` scope and assign that to the introspection route but this is entirely optional and depends on your usage.
+
+For example, DataHive currently only issues Client Credentials grant type to internal applications and we protect the introspection route, by default, using the `client` middleware. Therefore, we don't need additional verification to protect the route.
+
+You will need to modify the `Introspection::routes` call on your authorization server if you want to use a scope to protect the route. Below, we are using the Passport `scope` middleware in the following example:
 
 ```php
 Introspection::routes([
     'middleware' => [
         'client',
-        'scope:introspect'
+        'scope:Introspect'
     ]
 ]);
 ```
