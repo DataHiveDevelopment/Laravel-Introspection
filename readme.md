@@ -1,3 +1,6 @@
+# Heads up!
+I will be splitting this repository into two parts to seperate out the components for the authorization and resource servers. This package will remain probably become archived and two new packages created for the respective components. Advisories and links will be posted on this readme as necessary. Thanks :)
+
 # DataHive Development - Laravel Passport Introspection
 
 - <a href="#AboutThisPackage">About This Package</a>
@@ -126,6 +129,9 @@ Introspection::routes([
 ```
 
 I recommend leaving the `client` middleware in place unless you implement some other authentication method. See the [OAuth Introspection RFC](<https://tools.ietf.org/html/rfc7662#section-4>) for details on protecting the introspection endpoint.
+
+### Passport Trait
+As a reminder, add the `use HasAccessToken;` trait to your User model as per the <a href="https://laravel.com/docs/6.x/passport">Passport documentation</a>.
 
 ## <a name="ProtectingRoutes">#</a> Protecting Routes
 
