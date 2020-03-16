@@ -1,7 +1,12 @@
-# Heads up!
-I will be splitting this repository into two parts to seperate out the components for the authorization and resource servers. This package will remain probably become archived and two new packages created for the respective components. Advisories and links will be posted on this readme as necessary. Thanks :)
-
 # DataHive Development - Laravel Passport Introspection
+
+## Heads up
+
+I will be splitting this repository into two parts to separate out the components for the authorization and resource servers. This package will remain, probably become archived, and two new packages created for the respective components. Advisories and links will be posted on this readme as necessary.
+
+Install this package on **both** your resource and authorization server. Passport should also be installed and configured on your **authorization server**. Passport is a dependency of this package currently so it will get installed on your resource server but you do not need to configure it. Please use the methods outlined in this document in lieu of Passport on your resource servers.
+
+Thanks :)
 
 - <a href="#AboutThisPackage">About This Package</a>
 - <a href="#Installing">Installing</a>
