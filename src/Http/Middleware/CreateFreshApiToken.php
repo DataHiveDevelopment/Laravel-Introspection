@@ -53,6 +53,7 @@ class CreateFreshApiToken
                 $request->user($this->guard)->uuid, $request->session()->token()
             ));
         }
+
         return $response;
     }
 
@@ -108,6 +109,7 @@ class CreateFreshApiToken
                 return true;
             }
         }
+
         return false;
     }
 }

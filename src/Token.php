@@ -4,8 +4,8 @@ namespace DataHiveDevelopment\Introspection;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Token extends Model {
-
+class Token extends Model
+{
     /**
      * The attributes that should be cast to native types.
      *
@@ -46,7 +46,7 @@ class Token extends Model {
     /**
      * Get the client ID that the token belongs to.
      *
-     * @return integer
+     * @return int
      */
     public function client()
     {
@@ -55,7 +55,7 @@ class Token extends Model {
 
     /**
      * Get the scopes this token was requested with.
-     * 
+     *
      * @return array
      */
     public function scopes()

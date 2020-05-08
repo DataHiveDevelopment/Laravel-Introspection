@@ -3,19 +3,12 @@
 namespace DataHiveDevelopment\Introspection;
 
 use Firebase\JWT\JWT;
-use GuzzleHttp\client;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Container\Container;
-use Laravel\Passport\TransientToken;
-use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Contracts\Encryption\Encrypter;
 use Illuminate\Cookie\Middleware\EncryptCookies;
-use DataHiveDevelopment\Introspection\Introspection;
+use Illuminate\Http\Request;
 
 class IntrospectionGuard
 {
-
     /**
      * The user provider implementation.
      *
@@ -38,8 +31,7 @@ class IntrospectionGuard
      */
     public function __construct(
         Encrypter $encrypter
-    )
-    {
+    ) {
         $this->encrypter = $encrypter;
     }
 
@@ -55,7 +47,7 @@ class IntrospectionGuard
             if (! $request = Introspection::introspect($request)) {
                 return; // Returns unauthenticated error
             }
-            
+
             // Get the model used for the current API provider, typically App\User
             $provider = config('auth.guards.api.provider');
 
@@ -65,7 +57,6 @@ class IntrospectionGuard
 
             // If we have a user_id we are probably using authorization code, bind token to user
             if ($request->attributes->get('oauth_user_id')) {
-
                 if (method_exists($model, 'findForIntrospect')) {
                     $user = (new $model)->findForIntrospect($request->attributes->get('oauth_user_id'))->first();
                 } else {
@@ -81,7 +72,7 @@ class IntrospectionGuard
                     'scopes' => explode(' ', $request->attributes->get('oauth_scopes')),
                     'expires_at' => $request->attributes->get('oauth_expires_at'),
                 ]);
-    
+
                 return $token ? $user->withAccessToken($token) : null;
             }
         } elseif ($request->cookie(Introspection::cookie())) {
@@ -136,6 +127,7 @@ class IntrospectionGuard
         if (! $token && $header = $request->header('X-XSRF-TOKEN')) {
             $token = $this->encrypter->decrypt($header, static::serialized());
         }
+
         return $token;
     }
 
@@ -148,5 +140,4 @@ class IntrospectionGuard
     {
         return EncryptCookies::serialized('XSRF-TOKEN');
     }
-
 }

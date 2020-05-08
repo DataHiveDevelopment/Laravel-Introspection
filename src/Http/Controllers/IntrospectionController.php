@@ -2,71 +2,67 @@
 
 namespace DataHiveDevelopment\Introspection\Http\Controllers;
 
-use Lcobucci\JWT\Token;
-use Lcobucci\JWT\Parser;
 use Illuminate\Http\Request;
-use Laravel\Passport\Passport;
-use Lcobucci\JWT\ValidationData;
-use Illuminate\Http\JsonResponse;
-use Lcobucci\JWT\Signer\Rsa\Sha256;
-use Laravel\Passport\ClientRepository;
-use Psr\Http\Message\ResponseInterface;
-use League\OAuth2\Server\ResourceServer;
-use Laravel\Passport\Token as PassportToken;
 use Laravel\Passport\Bridge\AccessTokenRepository;
-use League\OAuth2\Server\Exception\OAuthServerException;
+use Laravel\Passport\ClientRepository;
+use Laravel\Passport\Passport;
+use Laravel\Passport\Token as PassportToken;
+use Lcobucci\JWT\Parser;
+use Lcobucci\JWT\Signer\Rsa\Sha256;
+use Lcobucci\JWT\Token;
+use Lcobucci\JWT\ValidationData;
+use League\OAuth2\Server\ResourceServer;
 
 class IntrospectionController
 {
     /**
-	 * @var \Lcobucci\JWT\Parser
-	 */
+     * @var \Lcobucci\JWT\Parser
+     */
     private $jwt;
 
-	/**
-	 * @var \League\OAuth2\Server\ResourceServer
-	 */
+    /**
+     * @var \League\OAuth2\Server\ResourceServer
+     */
     private $resourceServer;
 
-	/**
-	 * @var \Laravel\Passport\Bridge\AccessTokenRepository
-	 */
+    /**
+     * @var \Laravel\Passport\Bridge\AccessTokenRepository
+     */
     private $accessTokenRepository;
 
-	/**
-	 * @var \Laravel\Passport\ClientRepository
-	 */
+    /**
+     * @var \Laravel\Passport\ClientRepository
+     */
     private $clientRepository;
 
-	/**
-	 * Setup private variables
-	 *
-	 * @param \Lcobucci\JWT\Parser $jwt
-	 * @param \League\OAuth2\Server\ResourceServer $resourceServer
-	 * @param \Laravel\Passport\Bridge\AccessTokenRepository $accessTokenRepository
-	 * @param \Laravel\Passport\ClientRepository
-	 */
-	public function __construct(
-		Parser $jwt,
-		ResourceServer $resourceServer,
-		AccessTokenRepository $accessTokenRepository,
-		ClientRepository $clientRepository
-    )
-	{
-		$this->jwt = $jwt;
-		$this->resourceServer = $resourceServer;
-		$this->accessTokenRepository = $accessTokenRepository;
-		$this->clientRepository = $clientRepository;
+    /**
+     * Setup private variables.
+     *
+     * @param \Lcobucci\JWT\Parser $jwt
+     * @param \League\OAuth2\Server\ResourceServer $resourceServer
+     * @param \Laravel\Passport\Bridge\AccessTokenRepository $accessTokenRepository
+     * @param \Laravel\Passport\ClientRepository
+     */
+    public function __construct(
+        Parser $jwt,
+        ResourceServer $resourceServer,
+        AccessTokenRepository $accessTokenRepository,
+        ClientRepository $clientRepository
+    ) {
+        $this->jwt = $jwt;
+        $this->resourceServer = $resourceServer;
+        $this->accessTokenRepository = $accessTokenRepository;
+        $this->clientRepository = $clientRepository;
     }
 
     /**
-	 * Setup private variables
-	 *
-	 * @param \Illuminate\Http\Request $request
+     * Setup private variables.
+     *
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function introspectToken(Request $request)
-	{
+    {
         try {
             if (! $this->validateIntrospectingClient($request)) {
                 return $this->inactiveResponse();
@@ -82,7 +78,7 @@ class IntrospectionController
             // Parse to Lcobucci\JWT\Token
             $token = $this->jwt->parse($request->token);
 
-            $publicKey = 'file://' . Passport::keyPath('oauth-public.key');
+            $publicKey = 'file://'.Passport::keyPath('oauth-public.key');
 
             // Validation Data for $token->validate() method
             $data = new ValidationData();
@@ -91,13 +87,12 @@ class IntrospectionController
             $data->setSubject($token->getClaim('sub'));
 
             if (
-                !$token->verify(new Sha256(), $publicKey) || // Verify token
-                !$token->validate($data) || // Validate token data
+                ! $token->verify(new Sha256(), $publicKey) || // Verify token
+                ! $token->validate($data) || // Validate token data
                 $token->isExpired() || // Is token expired?
                 $this->accessTokenRepository->isAccessTokenRevoked($token->getClaim('jti')) || // Has the token been revoked
                 $this->clientRepository->revoked($token->getClaim('aud')) // Has the client that requested the token been revoked
-            )
-            {
+            ) {
                 // If any of the above are false, we should return an inactive resposne
                 return $this->inactiveResponse();
             }
@@ -134,8 +129,8 @@ class IntrospectionController
     }
 
     /**
-     * Validates the client requesting introspection
-     * 
+     * Validates the client requesting introspection.
+     *
      * @param Illuminate\Http\Request $request
      * @return bool
      */
@@ -158,14 +153,14 @@ class IntrospectionController
     }
 
     /**
-     * Pre-defined response as part of the Introspection RFC
-     * 
+     * Pre-defined response as part of the Introspection RFC.
+     *
      * @return Illuminate\Http\JsonResponse
      */
     protected function inactiveResponse()
     {
         return response()->json([
-            'active' => false
+            'active' => false,
         ], 200);
     }
 }

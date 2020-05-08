@@ -20,6 +20,7 @@ class CheckClientCredentials extends CheckCredentials
             throw new AuthenticationException;
         }
     }
+
     /**
      * Validate token credentials.
      *

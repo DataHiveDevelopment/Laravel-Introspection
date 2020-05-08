@@ -2,8 +2,8 @@
 
 namespace DataHiveDevelopment\Introspection;
 
-trait HasAccessToken {
-
+trait HasAccessToken
+{
     /**
      * The current access token for the authentication user.
      *
@@ -41,7 +41,7 @@ trait HasAccessToken {
     public function withAccessToken($accessToken)
     {
         $this->accessToken = $accessToken;
+
         return $this;
     }
-    
 }

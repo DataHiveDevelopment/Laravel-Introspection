@@ -4,11 +4,10 @@ namespace DataHiveDevelopment\Introspection;
 
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
-use Laravel\Passport\RouteRegistrar;
 use Illuminate\Support\Facades\Route;
 
-class Introspection {
-
+class Introspection
+{
     /**
      * The name for API token cookies.
      *
@@ -26,8 +25,8 @@ class Introspection {
                 'grant_type' => 'client_credentials',
                 'client_id' => config('introspection.client_id'),
                 'client_secret' => config('introspection.client_secret'),
-                'scope' => config('introspection.token_scopes')
-            ]
+                'scope' => config('introspection.token_scopes'),
+            ],
         ]);
 
         // Decode the JSON, let's make sure we have an access_token
@@ -42,11 +41,11 @@ class Introspection {
             $response = $client->post(config('introspection.introspection_endpoint'), [
                 'form_params' => [
                     'token_type_hint' => 'access_token',
-                    'token' => $request->bearerToken()
+                    'token' => $request->bearerToken(),
                 ],
                 'headers' => [
-                    'Authorization' => 'Bearer ' . $accessToken
-                ]
+                    'Authorization' => 'Bearer '.$accessToken,
+                ],
             ]);
         } catch (GuzzleHttpRequestException $e) {
             return;
@@ -81,7 +80,7 @@ class Introspection {
         }
 
         static::$cookie = $cookie;
-        
+
         return new static;
     }
 
@@ -101,7 +100,7 @@ class Introspection {
         ];
 
         $options = array_merge($defaultOptions, $options);
-        
+
         Route::group($options, function ($router) {
             $router->post('/introspect', [
                 'uses' => 'IntrospectionController@introspectToken',

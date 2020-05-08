@@ -3,12 +3,11 @@
 namespace DataHiveDevelopment\Introspection\Http\Middleware;
 
 use Closure;
-use DataHiveDevelopment\Introspection\Token;
 use DataHiveDevelopment\Introspection\Introspection;
+use DataHiveDevelopment\Introspection\Token;
 
 abstract class CheckCredentials
 {
-
     /**
      * Handle an incoming request.
      *
@@ -35,7 +34,7 @@ abstract class CheckCredentials
     protected function validate($request, $scopes)
     {
         $request = Introspection::doIntrospection($request);
-        
+
         $token = new Token([
             'client' => $request->attributes->get('oauth_client_id'),
             'scopes' => explode(' ', $request->attributes->get('oauth_scopes')),
@@ -43,7 +42,7 @@ abstract class CheckCredentials
         ]);
 
         $this->validateCredentials($token);
-        
+
         $this->validateScopes($token, $scopes);
     }
 

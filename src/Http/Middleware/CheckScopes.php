@@ -2,8 +2,8 @@
 
 namespace DataHiveDevelopment\Introspection\Http\Middleware;
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Passport\Exceptions\MissingScopeException;
 
 class CheckScopes

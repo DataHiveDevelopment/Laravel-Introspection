@@ -2,15 +2,12 @@
 
 namespace DataHiveDevelopment\Introspection;
 
-use Illuminate\Auth\RequestGuard;
 use Illuminate\Auth\Events\Logout;
+use Illuminate\Auth\RequestGuard;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Config\Repository as Config;
-use DataHiveDevelopment\Introspection\Introspection;
-use DataHiveDevelopment\Introspection\IntrospectionGuard;
 
 class IntrospectionServiceProvider extends ServiceProvider
 {
@@ -34,7 +31,7 @@ class IntrospectionServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             __DIR__.'/config/introspection.php', 'introspection'
         );
-        
+
         $this->registerGuard();
     }
 
