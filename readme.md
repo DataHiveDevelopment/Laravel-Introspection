@@ -2,9 +2,9 @@
 
 ## Heads up
 
-I will be splitting this repository into two parts to separate out the components for the authorization and resource servers. This package will remain, probably become archived, and two new packages created for the respective components. Advisories and links will be posted on this readme as necessary.
+This package has been split into two parts to separate out the components for the authorization and resource servers. This package will remain, probably become archived.
 
-Development builds and documentation are live! You can find them: https://github.com/DataHiveDevelopment/passport-introspection-docs
+Development builds and documentation are now live! You can find them: https://github.com/DataHiveDevelopment/passport-introspection-docs
 
 # Introduction
 
